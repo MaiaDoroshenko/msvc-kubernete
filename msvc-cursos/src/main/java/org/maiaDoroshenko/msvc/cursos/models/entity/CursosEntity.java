@@ -2,9 +2,8 @@ package org.maiaDoroshenko.msvc.cursos.models.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
-import org.maiaDoroshenko.msvc.cursos.models.Usuario;
+import org.maiaDoroshenko.msvc.cursos.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,7 @@ public class CursosEntity {
     @JoinColumn(name = "curso_id")
     private List<CursoUsuarioEntity> cursoUsuarios;
     @Transient
-    private List<Usuario>usuarios;
+    private List<User>usuarios;
 
 
 

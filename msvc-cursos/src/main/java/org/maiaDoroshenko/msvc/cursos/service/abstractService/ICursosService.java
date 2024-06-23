@@ -1,6 +1,6 @@
 package org.maiaDoroshenko.msvc.cursos.service.abstractService;
 
-import org.maiaDoroshenko.msvc.cursos.models.Usuario;
+import org.maiaDoroshenko.msvc.cursos.models.User;
 import org.maiaDoroshenko.msvc.cursos.models.entity.CursosEntity;
 
 import java.util.List;
@@ -13,9 +13,9 @@ public interface ICursosService {
   Optional<CursosEntity>findByid(Long id);
   void deleteCurso(Long id);
 
-  Optional<Usuario>AssignUser(Usuario usuario,Long cursoId);
-  Optional<Usuario>createUser(Usuario usuario,Long cursoId);
-  Optional<Usuario>unassignUser(Usuario usuario,Long cursoId);
+  Optional<User>AssignUser(User usuario, Long cursoId);
+  Optional<User>createUser(User usuario, Long cursoId);
+  Optional<User>unassignUser(User usuario, Long cursoId);
 
 
 }

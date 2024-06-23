@@ -1,9 +1,10 @@
 package org.maiaDoroshenko.msvc.cursos.service.ImplService;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.maiaDoroshenko.msvc.cursos.models.Usuario;
+import org.maiaDoroshenko.msvc.cursos.clients.UserClientRest;
+import org.maiaDoroshenko.msvc.cursos.models.User;
+import org.maiaDoroshenko.msvc.cursos.models.entity.CursoUsuarioEntity;
 import org.maiaDoroshenko.msvc.cursos.models.entity.CursosEntity;
 import org.maiaDoroshenko.msvc.cursos.repository.CursosRepository;
 import org.maiaDoroshenko.msvc.cursos.service.abstractService.ICursosService;
@@ -20,18 +21,18 @@ import java.util.Optional;
 @Slf4j
 public class CursosServiceImpl implements ICursosService {
 
-
-    private final CursosRepository cursosRepository;
     @Autowired
-    public CursosServiceImpl(CursosRepository cursosRepository) {
-        this.cursosRepository = cursosRepository;
-    }
+    private CursosRepository cursosRepository;
+    @Autowired
+    private UserClientRest clientRest;
+
 
     @Override
     @Transactional(readOnly = true)
     public List<CursosEntity> findAll() {
         return (List<CursosEntity>) cursosRepository.findAll();
     }
+
     @Override
     @Transactional
     public CursosEntity saveCurso(CursosEntity cursos) {
@@ -63,21 +64,54 @@ public class CursosServiceImpl implements ICursosService {
                 .orElseThrow(() -> new NoSuchElementException("curso con id no encontrado"));
         cursosRepository.delete(cursoToDelete);
     }
-
     @Override
-    public Optional<Usuario> AssignUser(Usuario usuario, Long cursoId) {
+    @Transactional
+    public Optional<User> AssignUser(User usuario, Long cursoId) {
+        Optional<CursosEntity> optional = cursosRepository.findById(cursoId);
+        if (optional.isPresent()) {
+            User userMsvc = clientRest.findById(usuario.getId());
+
+            CursosEntity curso = optional.get();
+            CursoUsuarioEntity cursoUsuario = new CursoUsuarioEntity();
+            cursoUsuario.setId(userMsvc.getId());
+
+            curso.addCursoUsuario(cursoUsuario);
+            cursosRepository.save(curso);
+            return Optional.of(userMsvc);
+        }
         return Optional.empty();
     }
-
     @Override
-    public Optional<Usuario> createUser(Usuario usuario, Long cursoId) {
+    @Transactional
+    public Optional<User> createUser(User usuario, Long cursoId) {
+        Optional<CursosEntity> optional = cursosRepository.findById(cursoId);
+        if (optional.isPresent()) {
+            User newUserMsvc = clientRest.creteUser(usuario);
+
+            CursosEntity curso = optional.get();
+            CursoUsuarioEntity cursoUser = new CursoUsuarioEntity();
+            cursoUser.setId(newUserMsvc.getId());
+
+            curso.addCursoUsuario(cursoUser);
+            cursosRepository.save(curso);
+            return Optional.of(newUserMsvc);
+        }
         return Optional.empty();
     }
-
     @Override
-    public Optional<Usuario> unassignUser(Usuario usuario, Long cursoId) {
+    @Transactional
+    public Optional<User> unassignUser(User usuario, Long cursoId) {
+        Optional<CursosEntity> optional = cursosRepository.findById(cursoId);
+        if (optional.isPresent()) {
+            User userMsvc = clientRest.findById(usuario.getId());
+
+            CursosEntity curso = optional.get();
+            CursoUsuarioEntity cursoUsuario = new CursoUsuarioEntity();
+            cursoUsuario.setId(userMsvc.getId());
+
+            curso.removeCursoUsuario(cursoUsuario);
+            return Optional.of(userMsvc);
+        }
         return Optional.empty();
     }
-
-
 }
