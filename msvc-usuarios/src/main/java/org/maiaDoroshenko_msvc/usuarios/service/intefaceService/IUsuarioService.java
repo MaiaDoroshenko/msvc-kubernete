@@ -13,6 +13,8 @@ UsuarioEntity updateUsuario(UsuarioEntity usuario,Long id);
 void checkIfEmailExists(String email);
 void delete(Long id);
 
+List<UsuarioEntity>findAllByIdis(Iterable<Long>idis);
+
 
 
 

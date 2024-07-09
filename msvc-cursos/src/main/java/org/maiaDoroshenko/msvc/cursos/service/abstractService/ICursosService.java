@@ -16,6 +16,8 @@ public interface ICursosService {
   Optional<User>AssignUser(User usuario, Long cursoId);
   Optional<User>createUser(User usuario, Long cursoId);
   Optional<User>unassignUser(User usuario, Long cursoId);
+  Optional<CursosEntity> findAllUsersByIdis(Long id);
+  void deleteCursoUsuarioById(Long id);
 
 
 }

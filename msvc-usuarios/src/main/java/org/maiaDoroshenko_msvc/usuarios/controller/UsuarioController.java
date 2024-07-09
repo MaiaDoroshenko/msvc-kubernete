@@ -54,6 +54,8 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.findAll());
     }
 
+
+
     @GetMapping("/findById/{id}")
     public ResponseEntity<UsuarioEntity> findById(@PathVariable Long id) {
         Optional<UsuarioEntity> usuario = usuarioService.findById(id);
@@ -71,6 +73,12 @@ public class UsuarioController {
         }
     }
 
+
+    @GetMapping("/find-all-users-by-idis")
+    public ResponseEntity<?> findAllByIdis(@RequestParam List<Long> idis) {
+        return ResponseEntity.ok(usuarioService.findAllByIdis((idis)));
+    }
+
     private static ResponseEntity<Map<String, String>> validar(BindingResult result) {
         Map<String, String> errores = new HashMap<>();
         result.getFieldErrors().forEach(err -> {
@@ -78,4 +86,6 @@ public class UsuarioController {
         });
         return ResponseEntity.badRequest().body(errores);
     }
+
+
 }

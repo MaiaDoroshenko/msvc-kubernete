@@ -2,6 +2,7 @@ package org.maiaDoroshenko_msvc.usuarios.service.implementationService;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.maiaDoroshenko_msvc.usuarios.client.CursoClientRest;
 import org.maiaDoroshenko_msvc.usuarios.models.entity.UsuarioEntity;
 import org.maiaDoroshenko_msvc.usuarios.repository.UsuarioRepository;
 import org.maiaDoroshenko_msvc.usuarios.service.intefaceService.IUsuarioService;
@@ -19,6 +20,8 @@ import java.util.Optional;
 public class UsuarioServiceImpl implements IUsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private CursoClientRest clientRest;
 
     @Override
     @Transactional(readOnly = true)
@@ -36,6 +39,11 @@ public class UsuarioServiceImpl implements IUsuarioService {
             log.warn("Usuario con id {} no encontrado", id);
             return Optional.empty();
         }
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public List<UsuarioEntity> findAllByIdis(Iterable<Long> idis) {
+        return (List<UsuarioEntity>) usuarioRepository.findAllById(idis);
     }
 
     @Override
@@ -67,11 +75,13 @@ public class UsuarioServiceImpl implements IUsuarioService {
         if (usuarioRepository.findByEmail(email).isPresent()) {
             throw new IllegalArgumentException("El usuario con el correo electrónico " + email + " ya existe.");
         }
-
     }
     @Override
     @Transactional
     public void delete(Long id) {
         usuarioRepository.deleteById(id);
+        clientRest.deleteUserById(id);
     }
+
+
 }
