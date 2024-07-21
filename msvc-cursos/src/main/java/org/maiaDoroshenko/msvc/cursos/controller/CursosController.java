@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import org.maiaDoroshenko.msvc.cursos.models.User;
 import org.maiaDoroshenko.msvc.cursos.models.entity.CursosEntity;
 import org.maiaDoroshenko.msvc.cursos.service.abstractService.ICursosService;
-import org.maiaDoroshenko_msvc.usuarios.client.CursoClientRest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -20,6 +18,7 @@ import java.util.*;
 @AllArgsConstructor
 public class CursosController {
     private final ICursosService cursosService;
+
 
 
     @PostMapping("create")

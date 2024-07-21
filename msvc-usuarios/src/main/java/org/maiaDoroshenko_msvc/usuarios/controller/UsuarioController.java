@@ -50,8 +50,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<UsuarioEntity>> findAll() {
-        return ResponseEntity.ok(usuarioService.findAll());
+    public ResponseEntity<Map<String,List<UsuarioEntity>>> findAll() {
+        Map<String, List<UsuarioEntity>> response = Collections.singletonMap("Users", usuarioService.findAll());
+        return ResponseEntity.ok(response);
     }
 
 
